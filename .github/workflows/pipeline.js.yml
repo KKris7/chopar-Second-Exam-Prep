@@ -1,4 +1,4 @@
-name: Build My Grades
+name: Build Test and Deploy My grades
 on:
   push:
     branches: [ "main" ]
@@ -45,3 +45,12 @@ jobs:
             - name: Run the UI tests
               run: npm run test:ui
 
+  deploy:
+    needs: RunUiTests
+    runs-on: ubuntu-latest  
+    steps:
+        - name: Deploy to production
+          uses: johnbeynon/render-deploy-action@v0.0.8
+          with:
+              service-id: ${{ secrets.SECOND_EXAM_PREP_SERVICE }}
+              api-key: ${{ secrets.SECOND_EXAM_PREP_TOKEN }}
